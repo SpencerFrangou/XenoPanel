@@ -1,0 +1,28 @@
+%% XenoPanel toolkit workflow. Renders on GitHub and in the README.
+flowchart LR
+  C[Count matrix]:::in
+  S[Sample sheet]:::in
+  D[Dilution series]:::in
+  R["Resources<br/>PPI / GMT / CollecTRI"]:::in
+
+  X["1 - Cross-reactivity"]:::mod
+  Q["2 - QC + differential expression"]:::mod
+  DEC["3 - Decomposition"]:::mod
+  ENT["4 - Entropy + pathway activity"]:::mod
+
+  D --> X
+  X -->|exclusion mask| Q
+  C --> Q
+  S --> Q
+  Q -->|normalized matrix + fits| DEC
+  Q --> ENT
+  R --> ENT
+
+  X --> O1[("host fraction<br/>+ mask")]:::out
+  Q --> O2[("TMM CPM, DE tables, QC")]:::out
+  DEC --> O3[("heritable / environmental<br/>classes")]:::out
+  ENT --> O4[("diversity, entropy,<br/>signatures, pathways, TF")]:::out
+
+  classDef in  fill:#eef2f7,stroke:#9aa7b4,color:#1b2733;
+  classDef mod fill:#2c7fb8,stroke:#1c5a84,color:#ffffff;
+  classDef out fill:#fdf0e6,stroke:#d9995f,color:#5a3410;

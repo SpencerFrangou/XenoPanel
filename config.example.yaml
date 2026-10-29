@@ -1,0 +1,107 @@
+# ============================================================================
+# XenoPanel toolkit -- configuration
+# ----------------------------------------------------------------------------
+# Copy this file, edit it for your experiment, and run:
+#   Rscript run.R my_config.yaml
+# Every path is relative to `project_dir` unless given as an absolute path.
+# Turn modules on or off under `modules:`. Each module reads only the inputs
+# it needs, so you can run just the parts you want.
+# ============================================================================
+
+project_dir: examples            # root for inputs and outputs
+output_dir:  results             # created under project_dir
+
+# ---- inputs ----------------------------------------------------------------
+inputs:
+  # Count matrix: column 1 is the feature ID (a gene symbol, or the DriverMap
+  # "LibID|SYMBOL" form such as 2396|A1BG). Remaining columns are samples with
+  # raw integer counts. See docs/INPUT_FORMAT.md.
+  counts: counts.csv
+
+  # Sample sheet: one row per sample. Required columns: sample, group.
+  # Optional: context (in_vitro / in_vivo), replicate, source_column.
+  # If source_column is given it must match a column header in the count file;
+  # otherwise the count columns are expected to be named by `sample`.
+  samples: samples.csv
+
+# ---- which modules to run --------------------------------------------------
+modules:
+  crossreactivity:   true
+  qc_de:             true
+  decomposition:     true
+  entropy_pathways:  true
+
+# ============================================================================
+# Module: crossreactivity
+# Estimate, per feature, the fraction of signal contributed by a second
+# (host) species, from a dilution series that titrates target-species RNA
+# into a constant mass of host RNA, and build an exclusion mask.
+# ============================================================================
+crossreactivity:
+  dilution_counts: dilution_series.csv   # feature ID in col 1, mixture columns after
+  # Each mixture column is described here by the input masses (ng).
+  # `target_ng` is the profiled species; `host_ng` the contaminating species.
+  mixtures:
+    - {column_prefix: "T50_H0",   target_ng: 50,   host_ng: 0}    # pure target
+    - {column_prefix: "T10_H50",  target_ng: 10,   host_ng: 50}
+    - {column_prefix: "T2.5_H50", target_ng: 2.5,  host_ng: 50}
+    - {column_prefix: "T0.64_H50",target_ng: 0.64, host_ng: 50}
+    - {column_prefix: "T0_H50",   target_ng: 0,    host_ng: 50}   # pure host
+  operating_point: "T10_H50"   # mixture at which the mask tolerance is applied
+  host_tolerance: 0.10         # mask a feature if >10% of its signal is host-derived here
+  min_target_cpm: 5            # only consider features expressed in the target
+  curated_exclusions:          # optional extra feature IDs to force into the mask
+  apply_mask_in_de: true       # remove masked features before the qc_de module
+
+# ============================================================================
+# Module: qc_de
+# filterByExpr, TMM normalization, edgeR quasi-likelihood F-tests and TREAT.
+# ============================================================================
+qc_de:
+  min_count: 10                # filterByExpr min.count
+  treat_fold: 1.5              # fold-change threshold TREAT is tested against
+  fdr: 0.05
+  expressed_floor_cpm: 16      # a gene must reach this CPM in its high state to "count"
+  collapse_duplicate_symbols: false   # keep one feature per gene (true = sum duplicates)
+  # Contrasts: named differences between groups. "A - B" is higher-in-A.
+  contrasts:
+    PrimaryTumor_vs_Parental: "PrimaryTumor - Parental"
+    MetLung_vs_Parental:      "MetLung - Parental"
+    MetLung_vs_PrimaryTumor:  "MetLung - PrimaryTumor"
+    MetLung_vs_MetLungCL:     "MetLung - MetLungCL"
+    MetLung_vs_MetSubQ:       "MetLung - MetSubQ"
+    MetLungCL_vs_Parental:    "MetLungCL - Parental"
+    MetSubQ_vs_MetLungCL:     "MetSubQ - MetLungCL"
+
+# ============================================================================
+# Module: decomposition
+# Split each gene's total change into a heritable part (retained when the
+# tissue is removed) and an environmental part (requires the tissue), using
+# an exact additive identity over three states. Optional site attribution.
+# ============================================================================
+decomposition:
+  total:         "MetLung_vs_Parental"      # contrast name from qc_de
+  heritable:     "MetLungCL_vs_Parental"    # both states cultured
+  environmental: "MetLung_vs_MetLungCL"     # in vivo minus explant
+  # Optional site split (leave the two below blank to skip):
+  reimplant:     "MetSubQ_vs_MetLungCL"     # recurs when reimplanted elsewhere -> general
+  site:          "MetLung_vs_MetSubQ"       # lung vs other site
+  band_low:  0.25     # environmental if heritable fraction < band_low
+  band_high: 0.75     # heritable if heritable fraction > band_high
+
+# ============================================================================
+# Module: entropy_pathways
+# Transcriptome diversity, network entropy, signature scoring, pathway and
+# TF activity. Network and gene-set files are optional; the pieces whose
+# resources are absent are skipped with a note.
+# ============================================================================
+entropy_pathways:
+  diversity: true            # Shannon, evenness, Gini, N50, Hill q=0,1,2 (no resources needed)
+  network_entropy: true      # SCENT signaling entropy rate + CCAT
+  ppi_edges: ppi_edges.tsv   # 2-column (symbol<TAB>symbol) PPI edge list; required for SR/CCAT
+  signatures: true           # singscore signature scoring
+  gene_sets: gene_sets.gmt   # GMT file of gene sets; required for signature scoring
+  progeny: true              # PROGENy pathway activity (needs real gene symbols; skipped on synthetic data)
+  tf_activity: true          # CollecTRI TF activity
+  collectri:                 # CSV with columns source,target,weight; required for tf_activity
+  min_regulon_size: 5
