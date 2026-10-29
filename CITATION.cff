@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: XenoPanel
+abstract: >-
+  A configuration-driven analysis toolkit for targeted transcriptomic panels:
+  species cross-reactivity masking, differential expression, a
+  heritable/environmental decomposition, and entropy and pathway analysis.
+type: software
+authors:
+  - family-names: Frangou
+    given-names: Spencer W.
+    affiliation: >-
+      Department of Cell and Cancer Biology, College of Medicine and Life
+      Sciences, The University of Toledo, Toledo, OH, USA
+version: 1.0.0
+date-released: "2026-10-29"
+doi: 10.5281/zenodo.23768221
+license: MIT
+repository-code: "https://github.com/SpencerFrangou/XenoPanel"
+url: "https://spencerfrangou.github.io/XenoPanel/"
+keywords:
+  - bioinformatics
+  - transcriptomics
+  - targeted sequencing
+  - differential expression
+  - cancer genomics

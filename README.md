@@ -4,6 +4,7 @@
 ![R](https://img.shields.io/badge/R-%E2%89%A54.3-276DC3?logo=r&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-optional%20plotting-3776AB?logo=python&logoColor=white)
 ![Status](https://img.shields.io/badge/status-research%20tool-brightgreen)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23768221.svg)](https://doi.org/10.5281/zenodo.23768221)
 
 # XenoPanel
 
@@ -134,3 +135,13 @@ plots.decomposition_scatter(res.decomposition())
 The R core performs the analysis and writes CSV tables; it draws no figures.
 Plotting is the optional Python layer. This is the reusable analytical core,
 not the figure pipeline of any one study.
+
+## Citation
+
+If you use XenoPanel, please cite the archived release:
+
+> Frangou, S. W. (2026). *XenoPanel* (v1.0.0). Zenodo.
+> https://doi.org/10.5281/zenodo.23768221
+
+A machine-readable `CITATION.cff` is included, so GitHub's "Cite this
+repository" button gives the same reference in APA and BibTeX.
