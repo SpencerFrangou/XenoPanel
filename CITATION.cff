@@ -9,15 +9,26 @@ type: software
 authors:
   - family-names: Frangou
     given-names: Spencer W.
+    orcid: "https://orcid.org/0009-0008-1125-4053"
     affiliation: >-
       Department of Cell and Cancer Biology, College of Medicine and Life
       Sciences, The University of Toledo, Toledo, OH, USA
 version: 1.0.0
 date-released: "2026-10-29"
-doi: 10.5281/zenodo.23768221
+doi: 10.5281/zenodo.23768220
 license: MIT
 repository-code: "https://github.com/SpencerFrangou/XenoPanel"
 url: "https://spencerfrangou.github.io/XenoPanel/"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23768220
+    description: Concept DOI, resolves to the latest archived version
+  - type: doi
+    value: 10.5281/zenodo.23768221
+    description: Version 1.0.0
+  - type: url
+    value: "https://bio.tools/xenopanel"
+    description: bio.tools registry entry
 keywords:
   - bioinformatics
   - transcriptomics

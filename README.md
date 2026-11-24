@@ -1,12 +1,18 @@
 ![XenoPanel](docs/banner.png)
 
-![License](https://img.shields.io/badge/license-MIT-blue)
+[![tests](https://github.com/SpencerFrangou/XenoPanel/actions/workflows/tests.yml/badge.svg)](https://github.com/SpencerFrangou/XenoPanel/actions/workflows/tests.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23768220.svg)](https://doi.org/10.5281/zenodo.23768220)
+[![bio.tools](https://img.shields.io/badge/bio.tools-xenopanel-orange)](https://bio.tools/xenopanel)
 ![R](https://img.shields.io/badge/R-%E2%89%A54.3-276DC3?logo=r&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-optional%20plotting-3776AB?logo=python&logoColor=white)
-![Status](https://img.shields.io/badge/status-research%20tool-brightgreen)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23768221.svg)](https://doi.org/10.5281/zenodo.23768221)
+![License](https://img.shields.io/badge/license-MIT-blue)
+[![ORCID](https://img.shields.io/badge/ORCID-0009--0008--1125--4053-A6CE39?logo=orcid&logoColor=white)](https://orcid.org/0009-0008-1125-4053)
 
 # XenoPanel
+
+XenoPanel analyses targeted RNA panel data from xenografts and cell lines: it estimates and removes
+mouse (host) cross-reactivity, runs edgeR differential expression, splits each gene's change into
+heritable and environmental parts, and scores network entropy and pathway activity, all from one YAML file.
 
 A configuration-driven pipeline for analysing targeted transcriptomic panel
 data (DriverMap and comparable targeted RNA assays). It takes a count matrix
@@ -75,9 +81,16 @@ entropy by group. Regenerate with `python docs/make_example_montage.py`.
 
 ![Example outputs](docs/example_outputs.png)
 
+## Who it is for
+
+Groups using DriverMap or comparable targeted panels on xenograft, PDX or cell-line material who need the
+host contribution removed before comparing conditions, and who want the in-vitro versus in-vivo question
+answered as an explicit decomposition rather than a list of changed genes. `docs/statement_of_need.md` sets out
+the problem and how XenoPanel differs from read-level deconvolution tools and generic RNA-seq pipelines.
+
 ## Author
 
-Spencer Winston Frangou (laboratory of Professor Jianmin Zhang)
+Spencer Winston Frangou ([ORCID 0009-0008-1125-4053](https://orcid.org/0009-0008-1125-4053); laboratory of Professor Jianmin Zhang)
 
 Department of Cell and Cancer Biology
 College of Medicine and Life Sciences, The University of Toledo
@@ -136,12 +149,21 @@ The R core performs the analysis and writes CSV tables; it draws no figures.
 Plotting is the optional Python layer. This is the reusable analytical core,
 not the figure pipeline of any one study.
 
+## Contributing and support
+
+Bug reports, questions and feature requests go to the [issue tracker](https://github.com/SpencerFrangou/XenoPanel/issues);
+`CONTRIBUTING.md` describes how to propose a change and run the recovery test. Changes are listed in
+`CHANGELOG.md`. `Rscript run.R --version` prints the version, and every output folder's `sessionInfo.txt`
+starts with the version, run time, configuration checksum and package versions that produced it.
+
 ## Citation
 
 If you use XenoPanel, please cite the archived release:
 
 > Frangou, S. W. (2026). *XenoPanel* (v1.0.0). Zenodo.
-> https://doi.org/10.5281/zenodo.23768221
+> https://doi.org/10.5281/zenodo.23768220
 
-A machine-readable `CITATION.cff` is included, so GitHub's "Cite this
-repository" button gives the same reference in APA and BibTeX.
+The DOI above represents all versions and resolves to the latest; the DOI of version 1.0.0 itself is
+10.5281/zenodo.23768221. A machine-readable `CITATION.cff` is included, so GitHub's "Cite this
+repository" button gives the same reference in APA and BibTeX. The tool is registered at
+[bio.tools/xenopanel](https://bio.tools/xenopanel).
