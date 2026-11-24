@@ -18,6 +18,8 @@ way that can change results, a major release changes the configuration format or
 
 ### Fixed
 - The run banner and the Python plotting script still said "DriverMap toolkit" after the rename to XenoPanel.
+- `have()` reported an installed package that failed to load (igraph without the GLPK system library on
+  Linux) as "not installed"; it now prints the loader's message so the cause is visible in the run log.
 
 ## [1.0.0] - 2026-10-29
 

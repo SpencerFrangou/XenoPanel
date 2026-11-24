@@ -27,14 +27,14 @@ jobs:
         with:
           r-version: ${{ matrix.r }}
           use-public-rspm: true
+      - name: Install system libraries needed by igraph on Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libglpk40 libglpk-dev libxml2-dev libcurl4-openssl-dev
       - name: Install R dependencies
         run: |
-          install.packages(c("yaml", "igraph", "vegan", "BiocManager", "remotes"))
+          install.packages(c("yaml", "igraph", "vegan", "BiocManager"))
+          stopifnot(requireNamespace("igraph", quietly = TRUE))   # fail early if igraph cannot load
           BiocManager::install(c("edgeR", "limma", "singscore", "SummarizedExperiment", "decoupleR", "progeny"), ask = FALSE, update = FALSE)
-        shell: Rscript {0}
-      - name: Install SCENT (optional; CCAT runs without it)
-        continue-on-error: true
-        run: remotes::install_github("aet21/SCENT", upgrade = "never")
         shell: Rscript {0}
       - name: Version
         run: Rscript run.R --version

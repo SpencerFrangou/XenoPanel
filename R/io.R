@@ -66,8 +66,17 @@ align_counts <- function(m, samples) {
   m
 }
 
-# Load an optional package, returning TRUE if available.
-have <- function(pkg) requireNamespace(pkg, quietly = TRUE)
+# Load an optional package, returning TRUE if available. A package that is installed but fails to load
+# (a missing system library, an ABI mismatch) is reported with the loader's message, so that the run log
+# distinguishes "not installed" from "installed but broken".
+have <- function(pkg) {
+  if (suppressWarnings(requireNamespace(pkg, quietly = TRUE))) return(TRUE)
+  if (nzchar(system.file(package = pkg))) {
+    msg <- tryCatch({ loadNamespace(pkg); "" }, error = function(e) conditionMessage(e))
+    if (nzchar(msg)) say("  package '%s' is installed but failed to load: %s", pkg, gsub("\\s+", " ", msg))
+  }
+  FALSE
+}
 
 # Require a package or stop with an actionable message.
 need_pkg <- function(pkg, what) {

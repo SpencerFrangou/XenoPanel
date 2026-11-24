@@ -24,6 +24,11 @@ igraph 2.3.3, singscore 1.32.0, GSVA 2.6.6, decoupleR 2.17.0, progeny 1.34.0,
 vegan 2.7.6, yaml 2.3.12. The exact versions of any run are written to
 `sessionInfo.txt` in the output folder.
 
+On Linux, igraph needs the GLPK and libxml2 system libraries (Debian/Ubuntu: `sudo apt-get install
+libglpk40 libglpk-dev libxml2-dev`); without them the package installs but fails to load, and the run log
+now says so. SCENT is optional: without it the network-entropy step still writes CCAT and skips the
+signalling entropy rate.
+
 Install the CRAN and Bioconductor packages with:
 
 ```r
