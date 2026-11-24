@@ -44,6 +44,15 @@ jobs:
           Rscript run.R config.example.yaml
       - name: Recovery test
         run: Rscript tests/test_recovery.R
+      - name: Build, check and install the R package
+        if: matrix.os == 'ubuntu-latest'
+        env:
+          _R_CHECK_FORCE_SUGGESTS_: false
+        run: |
+          R CMD build --no-build-vignettes .
+          R CMD check --no-manual --no-tests XenoPanel_*.tar.gz
+          R CMD INSTALL XenoPanel_*.tar.gz
+          Rscript -e 'cat("installed XenoPanel", XenoPanel::xenopanel_version(), "\n")'
       - name: Python plotting layer
         if: matrix.os == 'ubuntu-latest'
         run: |

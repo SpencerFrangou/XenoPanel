@@ -8,6 +8,10 @@ way that can change results, a major release changes the configuration format or
 ## [Unreleased]
 
 ### Added
+- XenoPanel is now an installable R package: `DESCRIPTION`, `NAMESPACE` and help pages were added, the
+  pipeline moved into `xenopanel_run(cfg_path)` (`R/pipeline.R`), and `run.R` is a thin wrapper around it.
+  Install with `remotes::install_github("SpencerFrangou/XenoPanel")` and run with
+  `XenoPanel::xenopanel_run("my_config.yaml")`. CI builds and checks the package on Linux.
 - `Rscript run.R --version`; the version is printed in the run banner and written, with the run time, the
   configuration path and its checksum and the enabled modules, at the top of `sessionInfo.txt` in every output
   folder.

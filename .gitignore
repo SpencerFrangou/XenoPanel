@@ -1,0 +1,14 @@
+examples/counts.csv
+examples/samples.csv
+examples/dilution_series.csv
+examples/ppi_edges.tsv
+examples/gene_sets.gmt
+examples/TRUTH_host_crossreactive_genes.txt
+examples/results/
+*.tar.gz
+*.Rcheck/
+.Rhistory
+.RData
+.Rproj.user/
+__pycache__/
+.DS_Store

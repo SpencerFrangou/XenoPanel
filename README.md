@@ -102,6 +102,20 @@ Toledo, OH 43614, USA
 
 MIT (see LICENSE).
 
+## Installation
+
+Clone the repository and run `Rscript run.R` as below, or install it as an R package:
+
+```r
+install.packages("remotes")
+remotes::install_github("SpencerFrangou/XenoPanel")
+XenoPanel::xenopanel_run("my_config.yaml")      # same pipeline as Rscript run.R my_config.yaml
+```
+
+The analysis modules need the Bioconductor and CRAN packages listed in `docs/REQUIREMENTS.md`
+(edgeR, limma, igraph, singscore, decoupleR, progeny); each module stops with a clear message if one
+is missing.
+
 ## Quick start
 
 ```

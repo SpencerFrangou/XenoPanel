@@ -1,0 +1,24 @@
+Package: XenoPanel
+Type: Package
+Title: Configuration-Driven Analysis of Targeted Transcriptomic Panels
+Version: 1.0.0.9000
+Authors@R: person(given = "Spencer W.", family = "Frangou", role = c("aut", "cre"),
+                  email = "spencer.frangou@utoledo.edu",
+                  comment = c(ORCID = "0009-0008-1125-4053"))
+Description: Analysis of targeted transcriptomic panel data (DriverMap and comparable
+    targeted RNA assays) from xenografts and cell lines: estimation and masking of
+    host-species cross-reactivity from a dilution series, filtering, TMM normalisation
+    and differential expression with edgeR quasi-likelihood tests and TREAT, an exact
+    decomposition of expression changes into heritable and environmental components
+    over three states, and transcriptome diversity, network entropy (CCAT, SCENT),
+    signature (singscore), PROGENy and CollecTRI activity scores. Inputs, modules,
+    thresholds and contrasts are declared in a YAML configuration file.
+License: MIT + file LICENSE
+URL: https://github.com/SpencerFrangou/XenoPanel, https://spencerfrangou.github.io/XenoPanel/
+BugReports: https://github.com/SpencerFrangou/XenoPanel/issues
+Encoding: UTF-8
+Depends: R (>= 4.3)
+Imports: stats, utils, tools, yaml
+Suggests: edgeR, limma, igraph, singscore, SummarizedExperiment, decoupleR, progeny, vegan, SCENT
+biocViews: DifferentialExpression, GeneExpression, Transcriptomics, Normalization, Pathways
+RoxygenNote: none

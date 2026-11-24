@@ -1,5 +1,10 @@
 # Requirements
 
+XenoPanel can be run from a clone (`Rscript run.R config.yaml`) or installed as an R package
+(`remotes::install_github("SpencerFrangou/XenoPanel")`, then `XenoPanel::xenopanel_run("config.yaml")`).
+The package declares `yaml` as its only hard dependency; the analysis packages below are suggested and
+checked at run time by the module that needs them.
+
 ## Software
 
 **R 4.3 or newer.** The toolkit was developed and validated on R 4.6.0.

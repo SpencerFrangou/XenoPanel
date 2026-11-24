@@ -56,3 +56,17 @@ Everything is written as CSV under `output_dir`:
 example and asserts that it recovers the planted cross-reactive features and
 the planted heritable / environmental gene classes. It exits non-zero if any
 check fails, so it also serves as a smoke test after installing.
+
+## Using XenoPanel as an installed R package
+
+```r
+remotes::install_github("SpencerFrangou/XenoPanel")
+library(XenoPanel)
+xenopanel_run("my_config.yaml")          # whole pipeline, same as Rscript run.R my_config.yaml
+xenopanel_version()
+```
+
+The four modules are also exported (`run_crossreactivity()`, `run_qc_de()`, `run_decomposition()`,
+`run_entropy_pathways()`) together with the readers `read_counts()`, `read_samples()` and
+`align_counts()`, so a single module can be run from an R session or a notebook; see `?xenopanel_run`
+and `?run_modules`.
