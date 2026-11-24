@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Usage question
+    url: https://github.com/SpencerFrangou/XenoPanel/issues/new?labels=question
+    about: Ask about configuring a run or interpreting the decomposition and entropy outputs.

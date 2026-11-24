@@ -1,0 +1,60 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "41 6 1 * *"   # first day of each month: catches CRAN and Bioconductor releases that break the pipeline
+  workflow_dispatch:
+
+jobs:
+  recovery:
+    name: synthetic recovery test (R ${{ matrix.r }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-latest, r: release}
+          - {os: macos-latest, r: release}
+          - {os: windows-latest, r: release}
+    env:
+      R_KEEP_PKG_SOURCE: no
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.r }}
+          use-public-rspm: true
+      - name: Install R dependencies
+        run: |
+          install.packages(c("yaml", "igraph", "vegan", "BiocManager", "remotes"))
+          BiocManager::install(c("edgeR", "limma", "singscore", "SummarizedExperiment", "decoupleR", "progeny"), ask = FALSE, update = FALSE)
+        shell: Rscript {0}
+      - name: Install SCENT (optional; CCAT runs without it)
+        continue-on-error: true
+        run: remotes::install_github("aet21/SCENT", upgrade = "never")
+        shell: Rscript {0}
+      - name: Version
+        run: Rscript run.R --version
+      - name: Generate the synthetic example and run the pipeline
+        run: |
+          Rscript examples/make_example_data.R
+          Rscript run.R config.example.yaml
+      - name: Recovery test
+        run: Rscript tests/test_recovery.R
+      - name: Python plotting layer
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          python3 -m pip install -r python/requirements.txt
+          python3 python/plot_results.py examples/results
+          ls examples/results/figures
+      - uses: actions/upload-artifact@v4
+        if: always() && matrix.os == 'ubuntu-latest'
+        with:
+          name: synthetic-results
+          path: |
+            examples/results/*.csv
+            examples/results/*.txt
+            examples/results/figures/
