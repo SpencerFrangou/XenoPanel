@@ -16,7 +16,7 @@ from xenopanel import Results, plots
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Plot DriverMap toolkit results.")
+    ap = argparse.ArgumentParser(description="Plot XenoPanel results.")
     ap.add_argument("results_dir", help="the toolkit output directory (holds the CSV results)")
     ap.add_argument("--out", default=None, help="where to write PNGs (default: <results_dir>/figures)")
     ap.add_argument("--fdr", type=float, default=0.05)

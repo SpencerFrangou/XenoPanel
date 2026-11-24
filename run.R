@@ -14,8 +14,10 @@ suppressWarnings(suppressMessages({
     source(file.path(here, "R", f))
 }))
 `%||%` <- function(a, b) if (is.null(a)) b else a
+XENOPANEL_VERSION <- "1.1.0.dev"
 
 args <- commandArgs(trailingOnly = TRUE)
+if (length(args) >= 1 && args[1] %in% c("--version", "-V")) { cat(sprintf("XenoPanel %s\n", XENOPANEL_VERSION)); quit(status = 0) }
 cfg_path <- if (length(args) >= 1) args[1] else file.path(here, "config.example.yaml")
 if (!file.exists(cfg_path)) die("config file not found: %s", cfg_path)
 if (!have("yaml")) die("the 'yaml' package is required to read the config")
@@ -29,7 +31,7 @@ out_dir <- ensure_dir(resolve_path(cfg$output_dir %||% "results", project_dir))
 mods <- cfg$modules %||% list()
 
 say("============================================================")
-say("DriverMap toolkit")
+say("XenoPanel %s", XENOPANEL_VERSION)
 say("  config : %s", normalizePath(cfg_path))
 say("  project: %s", project_dir)
 say("  output : %s", out_dir)
@@ -69,4 +71,7 @@ if (isTRUE(mods$entropy_pathways)) run_entropy_pathways(cfg, de, samples, out_di
 
 say("============================================================")
 say("done. outputs in %s", out_dir)
-writeLines(capture.output(sessionInfo()), file.path(out_dir, "sessionInfo.txt"))
+writeLines(c(sprintf("XenoPanel %s", XENOPANEL_VERSION), sprintf("run: %s", format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z")),
+             sprintf("config: %s", normalizePath(cfg_path)), sprintf("config md5: %s", tryCatch(as.character(tools::md5sum(cfg_path)), error = function(e) "n/a")),
+             sprintf("modules: %s", paste(names(Filter(isTRUE, mods)), collapse = ", ")), "", capture.output(sessionInfo())),
+           file.path(out_dir, "sessionInfo.txt"))
